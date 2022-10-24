@@ -1,0 +1,67 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*hasta kayıt ekranı için önce form tagı sonra da inputlar
+*@
+
+<form>
+    <div>
+
+        <div  class="row col-12">
+            <div class="col-3"> <label> AD: </label> </div>
+            <div class="col-9"> <input name="name" /> </div>   
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> SOYAD: </label> </div>
+            <div class="col-9"> <input name="surname" /> </div>
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> TC NO: </label> </div>
+            <div class="col-9"> <input name="tc" /> </div>
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> Telefon No: </label> </div>
+            <div class="col-9"> <input name="phone" /> </div>
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> Mail: </label> </div>
+            <div class="col-9"> <input name="mail" /> </div>
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> Doğum Tarihi: </label> </div>
+            <div class="col-9"> <input name="birthDate" /> </div>
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> Doğum Yeri: </label> </div>
+            <div class="col-9"> <input name="birthPlace" /> </div>
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> Adres: </label> </div>
+            <div class="col-9"> <input name="adress" /> </div>
+        </div>
+
+
+
+        <div>
+            <button style="margin-top:20px" class="btn btn-outline-info" asp-controller="Patient" asp-action="Save"> Sonraki Hastaya Geç</button>
+        </div>
+
+    </div>
+    
+
+
+
+       
+        
+        
+   
+</form>
