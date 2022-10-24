@@ -1,7 +1,14 @@
-﻿@*
+﻿@using Hospital.DB.Model
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 @{
+    List<string> Iller=ViewData["Iller"] as List<string>;
+
+    List<Polyclinic> policlinics=ViewData["policlinics"] as List<Polyclinic>;
+
+    List<Doctor> doctors=ViewData["doctors"] as List<Doctor>;
 }
 @*hasta kayıt ekranı için önce form tagı sonra da inputlar
 *@
@@ -11,48 +18,101 @@
 
         <div  class="row col-12">
             <div class="col-3"> <label> AD: </label> </div>
-            <div class="col-9"> <input name="name" /> </div>   
+            <div class="col-9"> <input type="text" name="name" /> </div>   
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> SOYAD: </label> </div>
-            <div class="col-9"> <input name="surname" /> </div>
+            <div class="col-9"> <input type="text" name="surname" /> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> TC NO: </label> </div>
-            <div class="col-9"> <input name="tc" /> </div>
+            <div class="col-9"> <input type="text" name="tc" pattern="[0-9]{11}" title="İstenilen bilgi 11 haneli sayı" /> </div>
         </div>
 
+        @*Telefona özel regex*@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Telefon No: </label> </div>
-            <div class="col-9"> <input name="phone" /> </div>
+            <div class="col-9"> <input type="text" name="phone" placeholder="123-123-1234" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" /> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Mail: </label> </div>
-            <div class="col-9"> <input name="mail" /> </div>
+            <div class="col-9"> <input type="email" name="mail" /> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Doğum Tarihi: </label> </div>
-            <div class="col-9"> <input name="birthDate" /> </div>
+            <div class="col-9"> <input type="date" name="birthDate" /> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Doğum Yeri: </label> </div>
-            <div class="col-9"> <input name="birthPlace" /> </div>
+            <div class="col-9"> 
+                <select name="birthplace"> @*bunu kod kısmında yazabilirz*@
+                    @foreach (var eleman in Iller)
+                    {
+                        <option value="@eleman"> @eleman</option>
+                    }                    
+                </select>
+            </div>
+        </div>
+
+       @* Adres bilgisini input yerine textarea*@
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> Adres: </label> </div>
+            <div class="col-9">
+                <textarea name="adress" rows="5"></textarea>
+            </div>
+        </div>
+        
+        <br />
+
+        @*name kısımları sqldeki columnlarla aynı olmalı çünkü çakıştıralım*@
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> Randevu Tarihi: </label> </div>
+            <div class="col-9">
+                <input type="datetime-local" name="date"/>
+            </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label> Adres: </label> </div>
-            <div class="col-9"> <input name="adress" /> </div>
+            <div class="col-3"> <label> Poliklinikler: </label> </div>
+            <div class="col-9">
+                <select name="policlinicId">
+                    @*bunu kod kısmında yazabilirz*@
+                    @foreach (var eleman in policlinics)
+                    {
+                        @*arkaplanda yani value da id görünürde name basılcak seçtiğimizde idsini seçmiş oluoz*@
+                        <option value="@eleman.id"> @eleman.name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label> Doktor: </label> </div>
+            <div class="col-9">
+                <select name="doctorId">
+                    @*bunu kod kısmında yazabilirz*@
+                    @foreach (var eleman in doctors)
+                    {
+                        @*arkaplanda yani value da id görünürde name basılcak seçtiğimizde idsini seçmiş oluoz*@
+                        <option value="@eleman.id"> @eleman.name @eleman.surname</option>
+                    }
+                </select>
+            </div>
         </div>
 
 
 
-        <div>
-            <button style="margin-top:20px" class="btn btn-outline-info" asp-controller="Patient" asp-action="Save"> Sonraki Hastaya Geç</button>
+        <div class="row col-12">
+            <div class="col-3"></div>
+            <div class="col-9">
+                <button style="margin-top:20px" class="btn btn-outline-info" asp-controller="Patient" asp-action="Save"> Sonraki Hastaya Geç</button>
+            </div>
+            
         </div>
 
     </div>

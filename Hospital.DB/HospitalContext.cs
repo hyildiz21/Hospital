@@ -13,11 +13,13 @@ namespace Hospital.DB
 
     public partial class HospitalContext : DbContext
     {
-        //list yapısı gibi 
+        //list yapısı gibi tablolarımızı contexte tanıttık
         public virtual DbSet<User> Users { get; set; } = null;
         public virtual DbSet<Doctor> Doctors { get; set; } = null;
         public virtual DbSet<UserType> UserTypes { get; set; } = null;
         public virtual DbSet<Patient> Patients { get; set; } = null;
+        public virtual DbSet<Polyclinic> Polyclinics { get; set; } = null;
+        public virtual DbSet<Appointment> Appointments { get; set; } = null;
         
         
         

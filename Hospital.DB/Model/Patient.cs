@@ -20,5 +20,6 @@ namespace Hospital.DB.Model
         [StringLength(150)] public string mail { get; set; }
         public DateTime birthDate { get; set; }
         [StringLength(80)] public string birthPlace { get; set; }
+        [StringLength(150)] public string adress { get; set; }
     }
 }
