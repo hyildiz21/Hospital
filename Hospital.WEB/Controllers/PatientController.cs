@@ -10,52 +10,90 @@ namespace Hospital.WEB.Controllers
         /// contexti bir kez oluşturup tekrar tekrar kullanabililelim.
         /// </summary>
         HospitalContext context;
+
+        //Dbdeki poliklinik tablosundaki bölümleri çektik
+        List<Polyclinic> policlinics;
+
+        //Dbdeki doktor tablosundaki doktorları çektik
+        List<Doctor> doctors;
+
+        List<string> Iller;
+
+
         public PatientController()
         {
-               context = new HospitalContext();
-        }
+            context = new HospitalContext();
+            Iller = new List<string>();
 
 
-        public IActionResult Index()
-        {
             //doğum yerlerini seçenek olarak patient cont ta tanımlayıp indexe gönderebiliriz
             //gönderirsek index e de söylememiz gerek biz bunu bekliyoruz diye
-            List<string>Iller=new List<string>();
+
             Iller.Add("İstanbul");
             Iller.Add("Ankara");
             Iller.Add("İzmir");
             Iller.Add("Samsun");
             Iller.Add("Çanakkale");
-            ViewData["Iller"]=Iller;
 
-            //Dbdeki poliklinik tablosundaki bölümleri çektik
-            List<Polyclinic> policlinics = context.Polyclinics.ToList();
+            policlinics= context.Polyclinics.ToList();
+            doctors= context.Doctors.ToList();
+
+        }
+
+
+        public IActionResult Index()
+        {
+
+            ViewData["Iller"] = Iller;
+
             ViewData["policlinics"] = policlinics;
 
-            //Dbdeki doktor tablosundaki doktorları çektik
-            List<Doctor> doctors = context.Doctors.ToList();
             ViewData["doctors"] = doctors;
 
             //daha sonra bu iki ifadeyi indeximize tanıtmamız lazım yukarıdaki illerdeki gibi
 
-
             return View();
         }
 
-        public IActionResult Save(Patient patient)
+        //hasta bilgisi ve randevu bilgisini almak için 2 parametre verdik
+        public IActionResult Save(Patient patient, Appointment appointment)
         {
-            HospitalContext context = new HospitalContext();
-            context.Patients.Add(patient);
+            //hastaları ekledik tabloya
+            var response= context.Patients.Add(patient);
+            context.SaveChanges();
+
+            //daha sonra randevu tablosundaki hasta id ile yukarda gelen hasta idyi eşitledik
+            appointment.patientId = response.Entity.id;
+            
+            int age = (int)(DateTime.Now - patient.birthDate).TotalDays / 365; //hasta yaşı
+            //tek satırda if kontrolü
+            appointment.patientType = age > 65 ? 1 : 2;
+
+
+
+
+            //randevuları ekleyeceğiz ama öncesinde contexti savechangeslememiz gerek çünkü hasta id oluşsun
+            context.Appointments.Add(appointment);
+
+
+
+
+
+
             try
             {
                 context.SaveChanges();
-                List<string> Iller = new List<string>();
-                Iller.Add("İstanbul");
-                Iller.Add("Ankara");
-                Iller.Add("İzmir");
-                Iller.Add("Samsun");
-                Iller.Add("Çanakkale");
+
+
+
+               
                 ViewData["Iller"] = Iller;
+
+                //Dbdeki poliklinik tablosundaki bölümleri çektik
+                ViewData["policlinics"] = policlinics;
+
+                //Dbdeki doktor tablosundaki doktorları çektik
+                ViewData["doctors"] = doctors;
 
                 return View("Index");
 
@@ -65,7 +103,7 @@ namespace Hospital.WEB.Controllers
 
                 return BadRequest(ex.ToString());
             }
-            
+
         }
     }
 }
