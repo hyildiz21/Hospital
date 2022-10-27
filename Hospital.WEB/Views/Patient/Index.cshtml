@@ -77,10 +77,11 @@
             </div>
         </div>
 
+        @*select te onchange ile metot çağırdık metodu en altta yazdık js ile*@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Poliklinikler: </label> </div>
             <div class="col-9">
-                <select name="policlinicId">
+                <select name="policlinicId" id="polId" onchange="GetDoctor()">
                     @*bunu kod kısmında yazabilirz*@
                     @foreach (var eleman in policlinics)
                     {
@@ -94,7 +95,7 @@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Doktor: </label> </div>
             <div class="col-9">
-                <select name="doctorId">
+                <select name="doctorId" id="docId">
                     @*bunu kod kısmında yazabilirz*@
                     @foreach (var eleman in doctors)
                     {
@@ -106,7 +107,6 @@
         </div>
 
 
-
         <div class="row col-12">
             <div class="col-3"></div>
             <div class="col-9">
@@ -116,12 +116,26 @@
         </div>
 
     </div>
-    
 
-
-
-       
-        
-        
-   
 </form>
+
+<script> 
+
+    function GetDoctor()
+    {
+        
+        alert(document.getElementById("polId").value);
+
+        select=document.getElementById("docId");
+
+        $("#docId").find('option').remove();
+        var opt=document.createElement('option');
+
+        opt.value="9"
+        opt.innerHTML="deneme"
+        select.appendChild(opt);
+
+    }
+
+
+</script>

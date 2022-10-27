@@ -40,7 +40,6 @@ namespace Hospital.WEB.Controllers
 
         }
 
-
         public IActionResult Index()
         {
 
@@ -69,24 +68,13 @@ namespace Hospital.WEB.Controllers
             //tek satırda if kontrolü
             appointment.patientType = age > 65 ? 1 : 2;
 
-
-
-
             //randevuları ekleyeceğiz ama öncesinde contexti savechangeslememiz gerek çünkü hasta id oluşsun
             context.Appointments.Add(appointment);
-
-
-
-
-
 
             try
             {
                 context.SaveChanges();
 
-
-
-               
                 ViewData["Iller"] = Iller;
 
                 //Dbdeki poliklinik tablosundaki bölümleri çektik
@@ -105,5 +93,15 @@ namespace Hospital.WEB.Controllers
             }
 
         }
+
+        public JsonResult GetDoctor(string polyclinicId)
+        {
+
+            return Json(doctors.Where(x => x.polyclinicId == Convert.ToInt32(polyclinicId)).ToList());
+
     }
+    }
+
+
+
 }
