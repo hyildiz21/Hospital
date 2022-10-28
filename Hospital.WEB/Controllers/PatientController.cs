@@ -12,7 +12,7 @@ namespace Hospital.WEB.Controllers
         HospitalContext context;
 
         //Dbdeki poliklinik tablosundaki bölümleri çektik
-        List<Polyclinic> policlinics;
+        List<Polyclinic> polyclinics;
 
         //Dbdeki doktor tablosundaki doktorları çektik
         List<Doctor> doctors;
@@ -35,7 +35,7 @@ namespace Hospital.WEB.Controllers
             Iller.Add("Samsun");
             Iller.Add("Çanakkale");
 
-            policlinics= context.Polyclinics.ToList();
+            polyclinics= context.Polyclinics.ToList();
             doctors= context.Doctors.ToList();
 
         }
@@ -45,7 +45,7 @@ namespace Hospital.WEB.Controllers
 
             ViewData["Iller"] = Iller;
 
-            ViewData["policlinics"] = policlinics;
+            ViewData["policlinics"] = polyclinics;
 
             ViewData["doctors"] = doctors;
 
@@ -78,7 +78,7 @@ namespace Hospital.WEB.Controllers
                 ViewData["Iller"] = Iller;
 
                 //Dbdeki poliklinik tablosundaki bölümleri çektik
-                ViewData["policlinics"] = policlinics;
+                ViewData["policlinics"] = polyclinics;
 
                 //Dbdeki doktor tablosundaki doktorları çektik
                 ViewData["doctors"] = doctors;
@@ -94,6 +94,7 @@ namespace Hospital.WEB.Controllers
 
         }
 
+        [HttpPost]
         public JsonResult GetDoctor(string polyclinicId)
         {
 

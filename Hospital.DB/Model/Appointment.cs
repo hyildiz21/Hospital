@@ -11,7 +11,7 @@ namespace Hospital.DB.Model
         public int id { get; set; }
         public DateTime date { get; set; }
 
-        public int policlinicId { get; set; }
+        public int polyclinicId { get; set; }
         public int doctorId { get; set; }
         public int patientId { get; set; }
         public int patientType { get; set; }

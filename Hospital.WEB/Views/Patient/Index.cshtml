@@ -6,12 +6,14 @@
 @{
     List<string> Iller=ViewData["Iller"] as List<string>;
 
-    List<Polyclinic> policlinics=ViewData["policlinics"] as List<Polyclinic>;
+    List<Polyclinic> polyclinics=ViewData["policlinics"] as List<Polyclinic>;
 
     List<Doctor> doctors=ViewData["doctors"] as List<Doctor>;
 }
 @*hasta kayıt ekranı için önce form tagı sonra da inputlar
 *@
+
+
 
 <form>
     <div>
@@ -53,6 +55,8 @@
                 <select name="birthplace"> @*bunu kod kısmında yazabilirz*@
                     @foreach (var eleman in Iller)
                     {
+                        <option value="none" selected disabled hidden> İl Seçiniz </option>
+
                         <option value="@eleman"> @eleman</option>
                     }                    
                 </select>
@@ -81,10 +85,11 @@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Poliklinikler: </label> </div>
             <div class="col-9">
-                <select name="policlinicId" id="polId" onchange="GetDoctor()">
+                <select name="polyclinicId" id="polyclinicId" onchange="GetDoctor()" >
                     @*bunu kod kısmında yazabilirz*@
-                    @foreach (var eleman in policlinics)
+                    @foreach (var eleman in polyclinics)
                     {
+                        <option value="none" selected disabled hidden> Poliklinik Seçiniz </option>
                         @*arkaplanda yani value da id görünürde name basılcak seçtiğimizde idsini seçmiş oluoz*@
                         <option value="@eleman.id"> @eleman.name</option>
                     }
@@ -95,11 +100,14 @@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Doktor: </label> </div>
             <div class="col-9">
-                <select name="doctorId" id="docId">
+                <select name="doctorId" id="doctorId">
                     @*bunu kod kısmında yazabilirz*@
+                    
                     @foreach (var eleman in doctors)
                     {
                         @*arkaplanda yani value da id görünürde name basılcak seçtiğimizde idsini seçmiş oluoz*@
+                        @*default değer*@
+                        <option value="none" selected disabled hidden>Doktor Seçiniz</option>
                         <option value="@eleman.id"> @eleman.name @eleman.surname</option>
                     }
                 </select>
@@ -123,17 +131,46 @@
 
     function GetDoctor()
     {
+        $.ajax({
+
+            url: '@Url.Action("GetDoctor", "Patient")',
+            type:"POST",
+            data:{polyclinicId: document.getElementById('polyclinicId').value},
+            //bu metot başarılı olursa bize dönüş yapan doktorlar=data--- item ın altında data onun altında da doktor
+            success: function(data){
+                $('#doctorId').find('option').remove();
+                if(data.length==0){
+
+                    select = document.getElementById('doctorId');
+
+                    var opt = document.createElement('option');
+
+                    opt.value = 0;
+                    opt.innerHTML ="Bu bölümde doktor bulunmamaktadır.";
+                    select.appendChild(opt);
+
+                }
+                $.each(data, function(i,item)
+                {
+                    select=document.getElementById('doctorId');
+                    
+                    var opt=document.createElement('option');
+
+                    opt.value=[item.id];
+                    opt.innerHTML=[item.name] + " " + [item.surname];
+                    select.appendChild(opt);
+               
+            
+                }
+
+            );
+            },
+            error: function () 
+            {
+                $('doctorId').find('option').remove();
+            }
+        });
         
-        alert(document.getElementById("polId").value);
-
-        select=document.getElementById("docId");
-
-        $("#docId").find('option').remove();
-        var opt=document.createElement('option');
-
-        opt.value="9"
-        opt.innerHTML="deneme"
-        select.appendChild(opt);
 
     }
 
