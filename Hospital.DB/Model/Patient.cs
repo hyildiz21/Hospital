@@ -11,15 +11,14 @@ namespace Hospital.DB.Model
     {
         public int id { get; set; }
 
-        [StringLength(150)] public string name { get; set; }
-        [StringLength(150)] public string surname { get; set; }
-        
-        //int64 verme nedenimiz 11 haneli tc girince int in sayısal değer aralığından fazla oluo
-        public Int64 tc { get; set; }
-        [StringLength(20)] public string phone { get; set; }
-        [StringLength(150)] public string mail { get; set; }
-        public DateTime birthDate { get; set; }
-        [StringLength(80)] public string birthPlace { get; set; }
-        [StringLength(150)] public string adress { get; set; }
+        [StringLength(150)] public string? name { get; set; }
+        [StringLength(150)] public string? surname { get; set; }
+       
+        [StringLength(11)] public string? tc { get; set; }
+        [StringLength(20)] public string? phone { get; set; }
+        [StringLength(150)] public string? mail { get; set; }
+        public DateTime? birthDate { get; set; }
+        [StringLength(80)] public string? birthPlace { get; set; }
+        [StringLength(150)] public string? adress { get; set; }
     }
 }

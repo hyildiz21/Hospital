@@ -64,7 +64,7 @@ namespace Hospital.WEB.Controllers
             //daha sonra randevu tablosundaki hasta id ile yukarda gelen hasta idyi eşitledik
             appointment.patientId = response.Entity.id;
             
-            int age = (int)(DateTime.Now - patient.birthDate).TotalDays / 365; //hasta yaşı
+            int age = (int)(DateTime.Now - Convert.ToDateTime(patient.birthDate)).TotalDays / 365; //hasta yaşı
             //tek satırda if kontrolü
             appointment.patientType = age > 65 ? 1 : 2;
 
@@ -100,7 +100,31 @@ namespace Hospital.WEB.Controllers
 
             return Json(doctors.Where(x => x.polyclinicId == Convert.ToInt32(polyclinicId)).ToList());
 
-    }
+         }
+
+        public JsonResult GetAppointment(string tc)
+        {
+            //çekilen tc ye ait olan hastayı çektik bütün hastaları değil hasta bilgilerini çektik
+            Patient patient= context.Patients.Where(x => x.tc ==tc).FirstOrDefault();
+            if (patient == null)
+            {
+                return null;
+            }
+            List<Appointment> appointments;
+
+            try
+            {
+                appointments= context.Appointments.Where(x => x.date.Value.Date == DateTime.Now.Date && x.patientId == patient.id).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return Json(appointments);
+        }
+
     }
 
 

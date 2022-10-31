@@ -14,11 +14,19 @@
 *@
 
 
-
+<body onload="GetDoctor()">
 <form>
-    <div>
+    
+<div class="row col-12">
 
-        <div  class="row col-12">
+    <div class="col-6">
+
+        <div class="row col-12">
+             <div class="col-3"> <label> TC NO: </label> </div>
+             <div class="col-9"> <input type="text" name="tc" id="tc" pattern="[0-9]{11}" title="İstenilen bilgi 11 haneli sayı" onblur="GetAppointment()"> </div>
+        </div>
+
+        <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> AD: </label> </div>
             <div class="col-9"> <input type="text" name="name" /> </div>   
         </div>
@@ -26,11 +34,6 @@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> SOYAD: </label> </div>
             <div class="col-9"> <input type="text" name="surname" /> </div>
-        </div>
-
-        <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label> TC NO: </label> </div>
-            <div class="col-9"> <input type="text" name="tc" pattern="[0-9]{11}" title="İstenilen bilgi 11 haneli sayı" /> </div>
         </div>
 
         @*Telefona özel regex*@
@@ -70,9 +73,7 @@
                 <textarea name="adress" rows="5"></textarea>
             </div>
         </div>
-        
         <br />
-
         @*name kısımları sqldeki columnlarla aynı olmalı çünkü çakıştıralım*@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Randevu Tarihi: </label> </div>
@@ -86,10 +87,11 @@
             <div class="col-3"> <label> Poliklinikler: </label> </div>
             <div class="col-9">
                 <select name="polyclinicId" id="polyclinicId" onchange="GetDoctor()" >
+                    <option value="0"> Poliklinik Seçiniz:</option>
                     @*bunu kod kısmında yazabilirz*@
                     @foreach (var eleman in polyclinics)
                     {
-                        <option value="none" selected disabled hidden> Poliklinik Seçiniz </option>
+                        @*<option value="none" selected disabled hidden> Poliklinik Seçiniz </option>*@
                         @*arkaplanda yani value da id görünürde name basılcak seçtiğimizde idsini seçmiş oluoz*@
                         <option value="@eleman.id"> @eleman.name</option>
                     }
@@ -107,13 +109,12 @@
                     {
                         @*arkaplanda yani value da id görünürde name basılcak seçtiğimizde idsini seçmiş oluoz*@
                         @*default değer*@
-                        <option value="none" selected disabled hidden>Doktor Seçiniz</option>
+                        @*<option value="none" selected disabled hidden>Doktor Seçiniz</option>*@
                         <option value="@eleman.id"> @eleman.name @eleman.surname</option>
                     }
                 </select>
             </div>
         </div>
-
 
         <div class="row col-12">
             <div class="col-3"></div>
@@ -125,7 +126,23 @@
 
     </div>
 
+    <div class="col-6"> 
+        <table id="dataTable" class="table table-dark">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Poliklinik</th>
+                    <th>Doktor</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentTr"> </tbody>
+        </table>
+    </div>
+
+ </div>
 </form>
+</body>
+
 
 <script> 
 
@@ -140,15 +157,26 @@
             success: function(data){
                 $('#doctorId').find('option').remove();
                 if(data.length==0){
+                    if (document.getElementById('polyclinicId').value=="0")
+                    {
+                        select = document.getElementById('doctorId');
 
-                    select = document.getElementById('doctorId');
+                        var opt = document.createElement('option');
 
-                    var opt = document.createElement('option');
+                        opt.value = 0;
+                        opt.innerHTML = "Öncelikle poliklinik bölümü seçiniz";
+                        select.appendChild(opt);
+                    }
+                    else
+                    {
+                        select = document.getElementById('doctorId');
 
-                    opt.value = 0;
-                    opt.innerHTML ="Bu bölümde doktor bulunmamaktadır.";
-                    select.appendChild(opt);
+                        var opt = document.createElement('option');
 
+                        opt.value = 0;
+                        opt.innerHTML = "Bu bölümde doktor bulunmamaktadır.";
+                        select.appendChild(opt);
+                    }
                 }
                 $.each(data, function(i,item)
                 {
@@ -171,6 +199,34 @@
             }
         });
         
+
+    }
+
+
+    function GetAppointment(){
+        var tc= document.getElementById('tc').value;
+        $.ajax({
+            url: '@Url.Action("GetAppointment", "Patient")',
+            type: "POST",
+            data: {tc: tc},
+            success: function(data){
+                $('#dataTable').DataTable().rows().remove().draw();
+                $.each(data, function(i, item){
+                    $('#dataTable').DataTable().row.add($('<tr>' +
+                    '<td>' + [item.date] + '</td>' +
+                    '<td>' + [item.polyclinicId] + '</td>' +
+                    '<td>' + [item.doctorId] + '</td>' + 
+                    '</tr>')).draw();
+                    
+                    
+                }
+                );
+            }
+
+
+
+
+        });
 
     }
 

@@ -9,12 +9,12 @@ namespace Hospital.DB.Model
     public partial class Appointment
     {
         public int id { get; set; }
-        public DateTime date { get; set; }
+        public DateTime? date { get; set; } = DateTime.Now;
 
-        public int polyclinicId { get; set; }
-        public int doctorId { get; set; }
-        public int patientId { get; set; }
-        public int patientType { get; set; }
+        public int? polyclinicId { get; set; }
+        public int? doctorId { get; set; }
+        public int? patientId { get; set; }
+        public int? patientType { get; set; }
 
     }
 }
