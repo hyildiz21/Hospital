@@ -1,5 +1,6 @@
 ﻿using Hospital.DB;
 using Hospital.DB.Model;
+using Hospital.WEB.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital.WEB.Controllers
@@ -35,8 +36,8 @@ namespace Hospital.WEB.Controllers
             Iller.Add("Samsun");
             Iller.Add("Çanakkale");
 
-            polyclinics= context.Polyclinics.ToList();
-            doctors= context.Doctors.ToList();
+            polyclinics = context.Polyclinics.ToList();
+            doctors = context.Doctors.ToList();
 
         }
 
@@ -58,12 +59,12 @@ namespace Hospital.WEB.Controllers
         public IActionResult Save(Patient patient, Appointment appointment)
         {
             //hastaları ekledik tabloya
-            var response= context.Patients.Add(patient);
+            var response = context.Patients.Add(patient);
             context.SaveChanges();
 
             //daha sonra randevu tablosundaki hasta id ile yukarda gelen hasta idyi eşitledik
             appointment.patientId = response.Entity.id;
-            
+
             int age = (int)(DateTime.Now - Convert.ToDateTime(patient.birthDate)).TotalDays / 365; //hasta yaşı
             //tek satırda if kontrolü
             appointment.patientType = age > 65 ? 1 : 2;
@@ -100,29 +101,55 @@ namespace Hospital.WEB.Controllers
 
             return Json(doctors.Where(x => x.polyclinicId == Convert.ToInt32(polyclinicId)).ToList());
 
-         }
+        }
 
         public JsonResult GetAppointment(string tc)
-        {
+
+        {       
             //çekilen tc ye ait olan hastayı çektik bütün hastaları değil hasta bilgilerini çektik
-            Patient patient= context.Patients.Where(x => x.tc ==tc).FirstOrDefault();
+            Patient patient = context.Patients.Where(x => x.tc == tc).FirstOrDefault();
+     
             if (patient == null)
             {
                 return null;
             }
-            List<Appointment> appointments;
 
-            try
+            List<Appointment> appointments = context.Appointments.Where(x => x.date.Value.Date == DateTime.Now.Date && x.patientId == patient.id).ToList();
+
+            List<AppointmentModel> appointmentModels=new List<AppointmentModel>();
+            foreach (var item in appointments)
             {
-                appointments= context.Appointments.Where(x => x.date.Value.Date == DateTime.Now.Date && x.patientId == patient.id).ToList();
-            }
-            catch (Exception ex)
-            {
+                AppointmentModel appointmentModel = new AppointmentModel
+                {
+                    id = item.id,
+                    date = item.date,
+                    polyclinicId = item.polyclinicId,
+                    doctorId = item.doctorId,
+                    patientId=item.patientId,
+                    patientType=item.patientType,
+                    //doktorun ad ve soyadı şimdi
+                    doctorNameSurname=doctors.Where(x=>x.id==item.doctorId).FirstOrDefault().name + " " + doctors.Where(x=>x.id==item.doctorId).FirstOrDefault().surname,
+                    //poliklinik ismi yazdırdık
+                    polyclinicName=polyclinics.Where(x=>x.id==item.polyclinicId).FirstOrDefault().name
 
-                throw;
+                };
+                appointmentModels.Add(appointmentModel); 
             }
+            
 
-            return Json(appointments);
+
+
+            return Json(appointmentModels);
+
+            //return Json(appointments);
+
+
+        }
+
+        public JsonResult GetPatient(string tc)
+        {
+            return Json(context.Patients.Where(x => x.tc == tc).FirstOrDefault());
+
         }
 
     }

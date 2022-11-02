@@ -23,39 +23,39 @@
 
         <div class="row col-12">
              <div class="col-3"> <label> TC NO: </label> </div>
-             <div class="col-9"> <input type="text" name="tc" id="tc" pattern="[0-9]{11}" title="İstenilen bilgi 11 haneli sayı" onblur="GetAppointment()"> </div>
+             <div class="col-9"> <input type="text" name="tc" id="tc" pattern="[0-9]{11}" title="İstenilen bilgi 11 haneli sayı" onblur="GetInfo()"> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> AD: </label> </div>
-            <div class="col-9"> <input type="text" name="name" /> </div>   
+            <div class="col-9"> <input type="text" name="name" id="name" /> </div>   
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> SOYAD: </label> </div>
-            <div class="col-9"> <input type="text" name="surname" /> </div>
+            <div class="col-9"> <input type="text" name="surname" id="surname"/> </div>
         </div>
 
         @*Telefona özel regex*@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Telefon No: </label> </div>
-            <div class="col-9"> <input type="text" name="phone" placeholder="123-123-1234" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" /> </div>
+            <div class="col-9"> <input type="text" name="phone" id="phone" placeholder="123-123-1234" pattern="[0-9]{10}" /> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Mail: </label> </div>
-            <div class="col-9"> <input type="email" name="mail" /> </div>
+            <div class="col-9"> <input type="email" name="mail" id="mail" /> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Doğum Tarihi: </label> </div>
-            <div class="col-9"> <input type="date" name="birthDate" /> </div>
+            <div class="col-9"> <input type="date" name="birthDate" id="birthDate" /> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Doğum Yeri: </label> </div>
             <div class="col-9"> 
-                <select name="birthplace"> @*bunu kod kısmında yazabilirz*@
+                <select name="birthplace" id="birthPlace"> @*bunu kod kısmında yazabilirz*@
                     @foreach (var eleman in Iller)
                     {
                         <option value="none" selected disabled hidden> İl Seçiniz </option>
@@ -70,7 +70,7 @@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Adres: </label> </div>
             <div class="col-9">
-                <textarea name="adress" rows="5"></textarea>
+                <textarea name="adress" id="adress" rows="5"></textarea>
             </div>
         </div>
         <br />
@@ -78,7 +78,7 @@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Randevu Tarihi: </label> </div>
             <div class="col-9">
-                <input type="datetime-local" name="date"/>
+                <input type="datetime-local" name="date" id="datetime"/>
             </div>
         </div>
 
@@ -127,12 +127,14 @@
     </div>
 
     <div class="col-6"> 
-        <table id="dataTable" class="table table-dark">
+        <table id="dataTable" class="table table-bordered">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Tarih</th>
                     <th>Poliklinik</th>
                     <th>Doktor</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="appointmentTr"> </tbody>
@@ -192,18 +194,26 @@
                 }
 
             );
-            },
-            error: function () 
-            {
-                $('doctorId').find('option').remove();
             }
+            //error: function () 
+            //{
+            //    $('doctorId').find('option').remove();
+            //}
         });
         
 
     }
 
+    //tc nin çıkışında çalışcak 2 metot
+    function GetInfo()
+    {
+        GetAppointment();
+        GetPatient();
+    }
 
-    function GetAppointment(){
+
+    function GetAppointment()
+    {
         var tc= document.getElementById('tc').value;
         $.ajax({
             url: '@Url.Action("GetAppointment", "Patient")',
@@ -213,21 +223,45 @@
                 $('#dataTable').DataTable().rows().remove().draw();
                 $.each(data, function(i, item){
                     $('#dataTable').DataTable().row.add($('<tr>' +
+                    '<td>' + [item.id] + '</td>' +
                     '<td>' + [item.date] + '</td>' +
-                    '<td>' + [item.polyclinicId] + '</td>' +
-                    '<td>' + [item.doctorId] + '</td>' + 
+                    '<td>' + [item.polyclinicName] + '</td>' +
+                    '<td>' + [item.doctorNameSurname] + '</td>' +
+                    '<td> <a onclick="GetSelected(' + [item.id] +');" > Tıkla </a> </td > ' +
                     '</tr>')).draw();
                     
                     
                 }
                 );
             }
-
-
-
-
         });
+    }
 
+    //hasta ve randevu bilgilerini ikiye ayırdık yukarda getinfoda birlikte çalıştırcaz
+    function GetPatient()
+    {
+        var tc=document.getElementById('tc').value;
+        $.ajax(
+            {
+                url: '@Url.Action("GetPatient","Patient")',
+                type: "POST",
+                data: {tc: tc},
+                success: function(data)
+                {
+                    document.getElementById('name').value=data.name;
+                    document.getElementById('surname').value=data.surname;
+                    document.getElementById('phone').value=data.phone;
+                    document.getElementById('mail').value = data.mail;
+                    document.getElementById('birthDate').value=data.birthDate.split('T')[0];
+                    document.getElementById('birthPlace').value=data.birthPlace;
+                    document.getElementById('adress').value=data.adress;
+                }
+            });
+    }
+
+    //yukarıya id ve tarih parametresi gönderdik a nın içine GetAppointmentda
+    function GetSelected(id){
+        alert(id)
     }
 
 
