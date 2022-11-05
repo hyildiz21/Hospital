@@ -23,12 +23,12 @@
 
         <div class="row col-12">
              <div class="col-3"> <label> TC NO: </label> </div>
-             <div class="col-9"> <input type="text" name="tc" id="tc" pattern="[0-9]{11}" title="İstenilen bilgi 11 haneli sayı" onblur="GetInfo()"> </div>
+             <div class="col-9"> <input type="text" name="tc" id="tc" pattern="[0-9]{11}"  title="İstenilen bilgi 11 haneli sayı" onblur="GetInfo()"> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> AD: </label> </div>
-            <div class="col-9"> <input type="text" name="name" id="name" /> </div>   
+            <div class="col-9"> <input type="text" name="name" id="name"/> </div>   
         </div>
 
         <div style="margin-top:10px" class="row col-12">
@@ -78,7 +78,7 @@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Randevu Tarihi: </label> </div>
             <div class="col-9">
-                <input type="datetime-local" name="date" id="datetime"/>
+                <input type="datetime-local" name="date" id="date"/>
             </div>
         </div>
 
@@ -121,10 +121,11 @@
             <div class="col-9">
                 <button style="margin-top:20px" class="btn btn-outline-info" asp-controller="Patient" asp-action="Save"> Sonraki Hastaya Geç</button>
             </div>
-            
-        </div>
 
     </div>
+
+    </div>
+
 
     <div class="col-6"> 
         <table id="dataTable" class="table table-bordered">
@@ -227,7 +228,7 @@
                     '<td>' + [item.date] + '</td>' +
                     '<td>' + [item.polyclinicName] + '</td>' +
                     '<td>' + [item.doctorNameSurname] + '</td>' +
-                    '<td> <a onclick="GetSelected(' + [item.id] +');" > Tıkla </a> </td > ' +
+                        '<td> <a onclick="GetSelected(' + [item.id] + ',\'' + [item.date] + '\',\'' + [item.polyclinicId] + '\',\'' + [item.polyclinicName] + '\',\'' + [item.doctorId] + '\',\'' + [item.doctorNameSurname] + '\');" > <i class="bi bi-box-arrow-in-down"></i> </a> </td > ' +
                     '</tr>')).draw();
                     
                     
@@ -255,13 +256,55 @@
                     document.getElementById('birthDate').value=data.birthDate.split('T')[0];
                     document.getElementById('birthPlace').value=data.birthPlace;
                     document.getElementById('adress').value=data.adress;
+
+                    //ekrana yazdıktan sonra deaktif
+                    document.getElementById('name').disabled=true;
+                    document.getElementById('surname').disabled = true;
+                    document.getElementById('phone').disabled=true;
+                    document.getElementById('mail').disabled = true;
+                    document.getElementById('birthDate').disabled = true;;
+                    document.getElementById('birthPlace').disabled=true;
+                    document.getElementById('adress').disabled = true;
+
+
+
+                    //document.getElementById('name').readOnly=true;
+
+
                 }
             });
     }
 
     //yukarıya id ve tarih parametresi gönderdik a nın içine GetAppointmentda
-    function GetSelected(id){
-        alert(id)
+    function GetSelected(id, date, polyclinicId, polycinicName, doctorId, doctorNameSurname) {
+        
+        //alttaki satır tab a basınca isimleri deaktif hale getiricek bi yol.
+        //document.getElementById('name').readOnly=true;
+        document.getElementById('date').value=date;
+
+
+        select = document.getElementById('polyclinicId');
+        var opt = document.createElement('option');
+        //option ı oluşturduk ve seçicez yani kayıtlı olan(randevudaki) polyclinici ekrana yazdırıcaz opt nin selected metodu ama her seferinde seçili bölümü bi daha eklio ÇÖZZZ!
+
+        opt.value = polyclinicId;
+        opt.innerHTML = polycinicName;
+        opt.selected = "selected"
+        select.appendChild(opt);
+
+        GetDoctor();
+
+        //tıklaya icona basınca aynı olayı doctor için de istiyorum tabi yukarda id ve namelerini parametre olarak verip "a" da basmam gerek
+        select = document.getElementById('doctorId');
+        var opt = document.createElement('option');
+
+        opt.value = doctorId;
+        opt.innerHTML = doctorNameSurname;
+        opt.selected = "selected"
+        select.appendChild(opt);
+
+
+
     }
 
 
