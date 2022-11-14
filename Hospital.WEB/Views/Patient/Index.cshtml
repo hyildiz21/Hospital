@@ -212,6 +212,9 @@
         GetPatient();
     }
 
+    
+
+ 
 
     function GetAppointment()
     {
@@ -287,6 +290,7 @@
         var opt = document.createElement('option');
         //option ı oluşturduk ve seçicez yani kayıtlı olan(randevudaki) polyclinici ekrana yazdırıcaz opt nin selected metodu ama her seferinde seçili bölümü bi daha eklio ÇÖZZZ!
 
+
         opt.value = polyclinicId;
         opt.innerHTML = polyclinicName;
         opt.selected = "selected"
@@ -302,6 +306,8 @@
         opt.innerHTML = doctorNameSurname;
         opt.selected = "selected"
         select.appendChild(opt);
+
+
 
 
 
