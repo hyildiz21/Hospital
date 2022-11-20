@@ -49,7 +49,7 @@
 
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"> <label> Doğum Tarihi: </label> </div>
-            <div class="col-9"> <input type="date" name="birthDate" id="birthDate" /> </div>
+            <div class="col-9"> <input type="date" name="birthDate" id="birthDate" required/> </div>
         </div>
 
         <div style="margin-top:10px" class="row col-12">
@@ -225,6 +225,10 @@
             data: {tc: tc},
             success: function(data){
                 $('#dataTable').DataTable().rows().remove().draw();
+                //eğer data boş değilse hastanın randevu bilgilerini ekrana ver else gerek yok çünkü
+                //227. satırda zaten remove luyoruz.
+                if(data!=null)
+                {
                 $.each(data, function(i, item){
                     $('#dataTable').DataTable().row.add($('<tr>' +
                     '<td>' + [item.id] + '</td>' +
@@ -236,7 +240,8 @@
                     
                     
                 }
-                );
+                    );
+                }
             }
         });
     }
@@ -252,22 +257,48 @@
                 data: {tc: tc},
                 success: function(data)
                 {
-                    document.getElementById('name').value=data.name;
-                    document.getElementById('surname').value=data.surname;
-                    document.getElementById('phone').value=data.phone;
-                    document.getElementById('mail').value = data.mail;
-                    document.getElementById('birthDate').value=data.birthDate.split('T')[0];
-                    document.getElementById('birthPlace').value=data.birthPlace;
-                    document.getElementById('adress').value=data.adress;
+                    //HASTA İÇİN
+                    //textboxların datanın boş veya dolu olmasına göre aktif ve boş olma durumları için if kontrolü
+                    if(data==null)
+                    {
+                        //ekrana yazdıktan sonra aktif
+                        document.getElementById('name').disabled = false;
+                        document.getElementById('surname').disabled = false;
+                        document.getElementById('phone').disabled = false;
+                        document.getElementById('mail').disabled = false;
+                        document.getElementById('birthDate').disabled = false;;
+                        document.getElementById('birthPlace').disabled = false;
+                        document.getElementById('adress').disabled = false;
 
-                    //ekrana yazdıktan sonra deaktif
-                    document.getElementById('name').disabled=true;
-                    document.getElementById('surname').disabled = true;
-                    document.getElementById('phone').disabled=true;
-                    document.getElementById('mail').disabled = true;
-                    document.getElementById('birthDate').disabled = true;;
-                    document.getElementById('birthPlace').disabled=true;
-                    document.getElementById('adress').disabled = true;
+                        //textbox içindeki alanları boşaltma
+                        document.getElementById('name').value = "";
+                        document.getElementById('surname').value = "";
+                        document.getElementById('phone').value = "";
+                        document.getElementById('mail').value = "";
+                        document.getElementById('birthDate').value = "";
+                        document.getElementById('birthPlace').value = "";
+                        document.getElementById('adress').value = "";
+                    }
+                    else
+                    {
+                        document.getElementById('name').value = data.name;
+                        document.getElementById('surname').value = data.surname;
+                        document.getElementById('phone').value = data.phone;
+                        document.getElementById('mail').value = data.mail;
+                        document.getElementById('birthDate').value = data.birthDate.split('T')[0];
+                        document.getElementById('birthPlace').value = data.birthPlace;
+                        document.getElementById('adress').value = data.adress;
+
+                        //ekrana yazdıktan sonra deaktif
+                        document.getElementById('name').disabled = true;
+                        document.getElementById('surname').disabled = true;
+                        document.getElementById('phone').disabled = true;
+                        document.getElementById('mail').disabled = true;
+                        document.getElementById('birthDate').disabled = true;;
+                        document.getElementById('birthPlace').disabled = true;
+                        document.getElementById('adress').disabled = true;
+                    }
+
 
 
 

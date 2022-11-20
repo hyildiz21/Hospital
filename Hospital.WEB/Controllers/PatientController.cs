@@ -58,14 +58,35 @@ namespace Hospital.WEB.Controllers
         //hasta bilgisi ve randevu bilgisini almak için 2 parametre verdik
         public IActionResult Save(Patient patient, Appointment appointment)
         {
-            //hastaları ekledik tabloya
-            var response = context.Patients.Add(patient);
-            context.SaveChanges();
+            int patientId;
+            int age;
 
-            //daha sonra randevu tablosundaki hasta id ile yukarda gelen hasta idyi eşitledik
-            appointment.patientId = response.Entity.id;
+            //gelen hasta bilgisine göre karşılaştırma yapıp böyle bir hasta var mı yok mu kontrol ediyoruz
+            //öncelikle eğer aynı tc li hastam kayıtlı ise bir daha yeni kayıt açmamak için kontrol
+            Patient oldpatient = context.Patients.Where(x => x.tc == patient.tc).FirstOrDefault();
 
-            int age = (int)(DateTime.Now - Convert.ToDateTime(patient.birthDate)).TotalDays / 365; //hasta yaşı
+            
+            if (oldpatient!=null) //hastanın var olma durumunda
+            {
+                patientId = oldpatient.id;
+                age = (int)(DateTime.Now - Convert.ToDateTime(oldpatient.birthDate)).TotalDays / 365; //hasta yaşı
+            }
+            else
+            {
+                //hastaları ekledik tabloya
+                var response = context.Patients.Add(patient);
+                context.SaveChanges();
+
+                //daha sonra randevu tablosundaki hasta id ile yukarda gelen hasta idyi eşitledik
+                patientId = response.Entity.id;
+
+                age =(int)(DateTime.Now - Convert.ToDateTime(patient.birthDate)).TotalDays / 365; //hasta yaşı
+
+            }
+
+            appointment.patientId = patientId;
+
+             
             //tek satırda if kontrolü
             appointment.patientType = age > 65 ? 1 : 2;
 
@@ -111,7 +132,7 @@ namespace Hospital.WEB.Controllers
      
             if (patient == null)
             {
-                return null;
+                return Json(null); //!!!önemli json deönmeli
             }
 
             List<Appointment> appointments = context.Appointments.Where(x => x.date.Value.Date == DateTime.Now.Date && x.patientId == patient.id).ToList();
