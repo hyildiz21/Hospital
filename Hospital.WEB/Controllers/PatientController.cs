@@ -135,7 +135,7 @@ namespace Hospital.WEB.Controllers
                 return Json(null); //!!!önemli json deönmeli
             }
 
-            List<Appointment> appointments = context.Appointments.Where(x => x.date.Value.Date == DateTime.Now.Date && x.patientId == patient.id).ToList();
+            List<Appointment> appointments = context.Appointments.Where(x => x.patientId == patient.id).ToList(); //geçmiş randevuları da gösterecek
 
             List<AppointmentModel> appointmentModels=new List<AppointmentModel>();
             foreach (var item in appointments)
@@ -160,7 +160,7 @@ namespace Hospital.WEB.Controllers
 
 
 
-            return Json(appointmentModels);
+            return Json(appointmentModels.OrderByDescending(x=>x.date)); //date e göre tersten sırala + jsde de küçük bir kod
 
             //return Json(appointments);
 

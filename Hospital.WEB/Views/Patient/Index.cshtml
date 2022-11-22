@@ -230,17 +230,24 @@
                 if(data!=null)
                 {
                 $.each(data, function(i, item){
-                    $('#dataTable').DataTable().row.add($('<tr>' +
+                        var date = 
+                        [item.date.split('T')[0].split('-')[2]] + '.' + 
+                        [item.date.split('T')[0].split('-')[1]] + '.' + 
+                        [item.date.split('T')[0].split('-')[0]] + ' Saat: ' +
+                        [item.date.split('T')[1].split(':')[0]] + ':' + 
+                        [item.date.split('T')[1].split(':')[1]];
+
+                     $('#dataTable').DataTable().row.add($('<tr>' +
                     '<td>' + [item.id] + '</td>' +
-                    '<td>' + [item.date] + '</td>' +
+                    '<td>' + date + '</td>' +
                     '<td>' + [item.polyclinicName] + '</td>' +
                     '<td>' + [item.doctorNameSurname] + '</td>' +
                     '<td> <a onclick="GetSelected(' + [item.id] + ',\'' + [item.date] + '\',\'' + [item.polyclinicId] + '\',\'' + [item.polyclinicName] + '\',\'' + [item.doctorId] + '\',\'' + [item.doctorNameSurname] + '\');" > <i class="bi bi-box-arrow-in-down"></i> </a> </td > ' +
                     '</tr>')).draw();
                     
                     
-                }
-                    );
+                });
+                $("#dataTable").DataTable().order([1, 'desc']).draw(); //datatabledaki tarihleri sıralama controllerdan alınan.
                 }
             }
         });
@@ -316,16 +323,33 @@
         //document.getElementById('name').readOnly=true;
         document.getElementById('date').value=date;
 
+        //HATALI KOD
+        //select = document.getElementById('polyclinicId');
+        //var opt = document.createElement('option');
+        ////option ı oluşturduk ve seçicez yani kayıtlı olan(randevudaki) polyclinici ekrana yazdırıcaz opt nin selected metodu ama her seferinde seçili bölümü bi daha eklio ÇÖZZZ!
 
+
+        //opt.value = polyclinicId;
+        //opt.innerHTML = polyclinicName;
+        //opt.selected = "selected"
+        //select.appendChild(opt);
+
+        //polyclinicId sinin indexini valuesunu bulcaz. -value dan indexi çekebiliriz-
         select = document.getElementById('polyclinicId');
-        var opt = document.createElement('option');
-        //option ı oluşturduk ve seçicez yani kayıtlı olan(randevudaki) polyclinici ekrana yazdırıcaz opt nin selected metodu ama her seferinde seçili bölümü bi daha eklio ÇÖZZZ!
+        var opt=select.options;
+
+        //optionslar içinde döndüm ve polyId si eşit olanı getirdim ekrana
+        $.each(opt, function (i, item)
+        {
+            if(item.value==polyclinicId)
+            {
+                select.options.selectedIndex=item.index;
+            }
 
 
-        opt.value = polyclinicId;
-        opt.innerHTML = polyclinicName;
-        opt.selected = "selected"
-        select.appendChild(opt);
+        });
+
+
 
         GetDoctor();
 
