@@ -15,6 +15,7 @@ namespace Hospital.DB.Model
         public int? doctorId { get; set; }
         public int? patientId { get; set; }
         public int? patientType { get; set; }
+        public string? complaint { get; set; }
 
     }
 }

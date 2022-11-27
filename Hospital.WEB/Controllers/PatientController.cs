@@ -65,8 +65,8 @@ namespace Hospital.WEB.Controllers
             //öncelikle eğer aynı tc li hastam kayıtlı ise bir daha yeni kayıt açmamak için kontrol
             Patient oldpatient = context.Patients.Where(x => x.tc == patient.tc).FirstOrDefault();
 
-            
-            if (oldpatient!=null) //hastanın var olma durumunda
+
+            if (oldpatient != null) //hastanın var olma durumunda
             {
                 patientId = oldpatient.id;
                 age = (int)(DateTime.Now - Convert.ToDateTime(oldpatient.birthDate)).TotalDays / 365; //hasta yaşı
@@ -80,13 +80,13 @@ namespace Hospital.WEB.Controllers
                 //daha sonra randevu tablosundaki hasta id ile yukarda gelen hasta idyi eşitledik
                 patientId = response.Entity.id;
 
-                age =(int)(DateTime.Now - Convert.ToDateTime(patient.birthDate)).TotalDays / 365; //hasta yaşı
+                age = (int)(DateTime.Now - Convert.ToDateTime(patient.birthDate)).TotalDays / 365; //hasta yaşı
 
             }
 
             appointment.patientId = patientId;
 
-             
+
             //tek satırda if kontrolü
             appointment.patientType = age > 65 ? 1 : 2;
 
@@ -126,10 +126,10 @@ namespace Hospital.WEB.Controllers
 
         public JsonResult GetAppointment(string tc)
 
-        {       
+        {
             //çekilen tc ye ait olan hastayı çektik bütün hastaları değil hasta bilgilerini çektik
             Patient patient = context.Patients.Where(x => x.tc == tc).FirstOrDefault();
-     
+
             if (patient == null)
             {
                 return Json(null); //!!!önemli json deönmeli
@@ -137,7 +137,7 @@ namespace Hospital.WEB.Controllers
 
             List<Appointment> appointments = context.Appointments.Where(x => x.patientId == patient.id).ToList(); //geçmiş randevuları da gösterecek
 
-            List<AppointmentModel> appointmentModels=new List<AppointmentModel>();
+            List<AppointmentModel> appointmentModels = new List<AppointmentModel>();
             foreach (var item in appointments)
             {
                 AppointmentModel appointmentModel = new AppointmentModel
@@ -146,21 +146,22 @@ namespace Hospital.WEB.Controllers
                     date = item.date,
                     polyclinicId = item.polyclinicId,
                     doctorId = item.doctorId,
-                    patientId=item.patientId,
-                    patientType=item.patientType,
+                    patientId = item.patientId,
+                    patientType = item.patientType,
                     //doktorun ad ve soyadı şimdi
-                    doctorNameSurname=doctors.Where(x=>x.id==item.doctorId).FirstOrDefault().name + " " + doctors.Where(x=>x.id==item.doctorId).FirstOrDefault().surname,
+                    doctorNameSurname = doctors.Where(x => x.id == item.doctorId).FirstOrDefault().name + " " + doctors.Where(x => x.id == item.doctorId).FirstOrDefault().surname,
                     //poliklinik ismi yazdırdık
-                    polyclinicName=polyclinics.Where(x=>x.id==item.polyclinicId).FirstOrDefault().name
+                    polyclinicName = polyclinics.Where(x => x.id == item.polyclinicId).FirstOrDefault().name,
+                    complaint = item.complaint,
 
                 };
-                appointmentModels.Add(appointmentModel); 
+                appointmentModels.Add(appointmentModel);
             }
-            
 
 
 
-            return Json(appointmentModels.OrderByDescending(x=>x.date)); //date e göre tersten sırala + jsde de küçük bir kod
+
+            return Json(appointmentModels.OrderByDescending(x => x.date)); //date e göre tersten sırala + jsde de küçük bir kod
 
             //return Json(appointments);
 
@@ -170,6 +171,31 @@ namespace Hospital.WEB.Controllers
         public JsonResult GetPatient(string tc)
         {
             return Json(context.Patients.Where(x => x.tc == tc).FirstOrDefault());
+        }
+
+        public JsonResult GetInsurance(string tc)
+        {
+            return Json(context.Insurances.Where(x => x.tc == tc).FirstOrDefault()); //tcleri karşılaştırdık tcye göre.
+        }
+
+        public JsonResult GetDoctorCost(string doctorId)
+        {
+            //doktorlar tablosundaki idleri karşılaştır ve o doktorun idsinin içindeki title id yi bulup değişkene atadık
+            var titleId = context.Doctors.Where(x => x.id == Convert.ToInt32(doctorId)).FirstOrDefault() == null ? 0 : context.Doctors.
+                Where(x => x.id == Convert.ToInt32(doctorId)).FirstOrDefault().titleId;
+
+            return Json(context.DoctorTitles.Where(x => x.id == titleId).FirstOrDefault()); //tcleri karşılaştırdık tcye göre.
+        }
+
+        public JsonResult GetDoctorRoom(string doctorId)
+        {
+            //doctor id kullanarak doktorun odasını buluyoruz.
+            //değer atayarak buluyoruz, karşıya gönderiyoruz.
+            var roomId = context.DoctorRooms.Where(x => x.doctorId == Convert.ToInt32(doctorId)).FirstOrDefault() == null ? 0 
+                :context.DoctorRooms.Where(x => x.doctorId == Convert.ToInt32(doctorId)).FirstOrDefault().roomId;
+            
+
+            return Json(context.Rooms.Where(x=>x.id==roomId).FirstOrDefault());
 
         }
 

@@ -12,6 +12,7 @@ namespace Hospital.WEB.Models
         public string? doctorNameSurname { get; set; }
         public int? patientId { get; set; }
         public int? patientType { get; set; }
+        public string? complaint { get; set; }
 
     }
 }

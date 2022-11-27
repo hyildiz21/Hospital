@@ -20,6 +20,10 @@ namespace Hospital.DB
         public virtual DbSet<Patient> Patients { get; set; } = null;
         public virtual DbSet<Polyclinic> Polyclinics { get; set; } = null;
         public virtual DbSet<Appointment> Appointments { get; set; } = null;
+        public virtual DbSet<Insurance> Insurances { get; set; } = null;
+        public virtual DbSet<DoctorTitle> DoctorTitles { get; set; } = null;
+        public virtual DbSet<DoctorRoom> DoctorRooms { get; set; } = null;
+        public virtual DbSet<Room> Rooms { get; set; } = null;
         
         
         
