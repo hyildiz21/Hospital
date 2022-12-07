@@ -5,10 +5,8 @@
     string userType = ViewData["userType"].ToString();
 }
 
-<div>
-      Hoş geldin! @userType  @user.nameSurname
-
-</div>
+<body onload="LoadFunc()">
+<div style="font-family:times; font-size:120%; text-align:center; ">Hoş geldin! @userType  @user.nameSurname</div>
 
 <div>
     @if (user.userTypeId == 2) //sadece kayıt elemanlarının görebileceği buton kontrolü
@@ -16,25 +14,182 @@
         <a style="margin-top:20px" id="hastaKayıt" class="btn btn-info" asp-action="Index" asp-controller="Patient"> Hasta Kayıt </a>
 
     }
+    else
+    {   
+        <div class="row col-12"> 
+            <div class="col-12">
+                <table id="dataTable" style="font-family:times; font-size:120%; text-align:center; border-block-start:solid; border-block-end:solid;"
+                   class="table table-hover" border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Randevu Bilgisi</th>
+                            <th>TC</th>
+                            <th>İsim Soyisim</th>
+                            <th>Doğum Tarihi</th>
+                            <th>Öncelik Durumu</th>
+                            <th>Şikayet</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
 
-</div>
+            @*<div class="col-4" style="text-align:center; font-family:times; ">            
+                <div>
+                    <div class="col-2">
+                        <label> Muayene Notu</label>
+                        <textarea id="muayeneId" rows="5"> </textarea>
+                    </div>
+                    <div class="col-2">
+                        <label> Hasta Bilgi</label>
+                        <input id="nameSurnameId"> </input>
+                    </div>
+                 </div>
+            </div>*@
+          
+       
+            @*muayene alanı*@
+            @*<div class=" col-2" style="text-align:center; font-family:times; ">
+                    <div>
+                        <div class=" col-2">
+                            <label> Muayene Notu</label>
+                            <textarea id="muayeneId" rows="5"> </textarea>
+                        </div>
+                    
+                    </div>
+            </div>*@
 
-@*    <div id="xxxxx" class="showhide">
-        <div class="hide">
-            <a href="#xxxxx">Buton Göster/ Aç</a>
+            @*hasta bilgilerik*@
+            @* <div class=" col-2" style="text-align:center; font-family:times;  ">
+                    <label style="background-color:pink"> Hasta Bilgisi </label>
+                    <div style ="margin-top:10px">
+                        <div class="col-2">
+                            <input id="nameSurnameId" placeholder="AD SOYAD">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:10px">
+                        <div class="col-2">  
+                            <input id="tc" placeholder="TC">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:10px">
+                        <label style="background-color:pink"> Hasta Şikayeti</label>
+                        <div class=" col-2">                           
+                            <textarea id="complaintId" placeholder="ŞİKAYET" rows="5"> </textarea>
+                        </div>
+                    </div>
+            </div>*@
+            
+
         </div>
-    </div>*@
-
-@*<script>
-    function gizleGoster(hastaKayıtID) {
-        var secilenID = document.getElementById(hastaKayıtID);
-        if (secilenID.style.display == "none") {
-            secilenID.style.display = "";
-        } else {
-            secilenID.style.display = "none";
         }
-    }
-</script>*@
 
+@*table içinde bizim appoinmenttan ulaşamadığımız alanlar var TC-İsimSoyisim-DoğumTarihi
+bunları AppointmentModele ekleyip doctorNameSurnmame policlinicName gibi sonradan çekeceğiz*@
+
+</body>
+
+<script>
+
+    function LoadFunc()
+    {
+        GetAppointment();
+        $("#dataTable").DataTable().order([5, 'asc'], [1, 'asc']).draw();
+
+    }
+
+    function GetAppointment()
+    {
+        var table = document.getElementById('dataTable');
+        $.ajax({
+            url: '@Url.Action("GetAppointment", "Home")',
+            type: "POST",
+            data: {},
+            success: function (data) {
+                $('#dataTable').DataTable().rows().remove().draw();
+                if (data != null) {
+                    $.each(data, function (i, item) {
+
+                        var time =
+                            [item.date.split('T')[0].split('-')[2]] + '.' +
+                            [item.date.split('T')[0].split('-')[1]] + '.' +
+                            [item.date.split('T')[0].split('-')[0]] + ' Saat: ' +
+                            [item.date.split('T')[1].split(':')[0]] + ':' +
+                            [item.date.split('T')[1].split(':')[1]];
+
+                        var birthDate =
+                            [item.patientBirthDate.split('T')[0].split('-')[2]] + '.' +
+                            [item.patientBirthDate.split('T')[0].split('-')[1]] + '.' +
+                            [item.patientBirthDate.split('T')[0].split('-')[0]];
+
+                        
+
+                        if ([item.patientType] == 1) {
+                            var string = [item.patientType].value = "Öncelikli Hasta";
+                            
+                            
+                            $('#dataTable').DataTable().row.add($('<tr>' +
+                                '<td>' + [item.id] + '</td>' +
+                                '<td>' + time + '</td>' +
+                                '<td>' + [item.patientTc] + '</td>' +
+                                '<td>' + [item.patientNameSurname] + '</td>' +
+                                '<td>' + birthDate + '</td>' +
+                                '<td style="background-color:lightskyblue">' + string + '</td>' +
+                                '<td style="background-color:grey">' + [item.complaint] + '</td>' +
+                                '<td> <a href="/Doctor/Index/' + [item.id] + '" > <i class="bi bi-arrow-down-square-fill"></i> </a> </td >' +
+                                '</tr>')).draw();
+
+                        }
+                        else {
+                            var string2 = [item.patientType].value = "Öncelikli Hasta Değil";
+                            
+                            $('#dataTable').DataTable().row.add($('<tr>' +
+                                '<td>' + [item.id] + '</td>' +
+                                '<td>' + time + '</td>' +
+                                '<td>' + [item.patientTc] + '</td>' +
+                                '<td>' + [item.patientNameSurname] + '</td>' +
+                                '<td>' + birthDate + '</td>' +
+                                '<td style="background-color:indianred" >' + string2 + '</td>' +
+                                '<td style="background-color:grey">' + [item.complaint] + '</td>' +
+                                '<td> <a href="/Doctor/Index/' + [item.id] + '" > <i class="bi bi-arrow-down-square-fill"></i> </a> </td >' +
+                                '</tr>')).draw();
+
+                        }
+
+                    });
+
+
+
+                    //ilk olarak öncelik durumuna göre (5) sonra da istediğimiz columna göre yapmak istiyoruz
+                    //var keep=true
+                    //if(keep)
+                    //{
+                    //    $("#dataTable").DataTable().order([5, 'asc']).draw();
+                    //    kopyalayıp bunun üzerinden 4e göre order??
+                    //    var newOrder= true
+                    //    if(newOrder)
+                    //    {
+                    //        $("#dataTable").DataTable().order([4, 'desc']).draw();
+                    //        keep=false
+                    //    }
+                    //}
+
+
+                }
+            }
+
+        });
+    }
+    setInterval
+    (GetAppointment(), 10000);
+
+
+
+</script>
 
 

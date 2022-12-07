@@ -24,6 +24,8 @@ namespace Hospital.DB
         public virtual DbSet<DoctorTitle> DoctorTitles { get; set; } = null;
         public virtual DbSet<DoctorRoom> DoctorRooms { get; set; } = null;
         public virtual DbSet<Room> Rooms { get; set; } = null;
+        public virtual DbSet<Analyz> Analyzes { get; set; } = null;
+        public virtual DbSet<Medicine> Medicines { get; set; } = null;
         
         
         

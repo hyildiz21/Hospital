@@ -1,0 +1,123 @@
+﻿@using Hospital.DB.Model
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Patient patient = Model as Patient;
+    //karşı tarafa listleri viewdata ile gönderdik
+    List<Analyz> analyzes = ViewData["Analyzes"] as List<Analyz>;
+    List<Medicine> medicines = ViewData["Medicines"] as List<Medicine>;
+
+
+}
+<form>
+    <body>
+        <div class="row col-12">
+            <div class="col-6">
+
+                @*tc*@
+                <div class="row col-12" @*style="color:black; padding:50px;"*@>
+                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> TC NO: </label> </div>
+                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "type="text" name="tc" id="tc" value="@patient.tc" disabled> </div>
+                </div>
+
+                @*isim*@
+                <div style="margin-top:10px" class="row col-12">
+                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> AD: </label> </div>
+                    <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center;" type="text" name="name" id="name" value="@patient.name" disabled /> </div>
+                </div>
+
+                @*soyad*@
+                <div style="margin-top:10px" class="row col-12">
+                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> SOYAD: </label> </div>
+                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "type="text" name="surname" id="surname" value="@patient.surname" disabled /> </div>
+                </div>
+
+                @*Telefona özel regex*@
+                <div style="margin-top:10px" class="row col-12">
+                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Telefon No: </label> </div>
+                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "type="text" name="phone" id="phone" value="@patient.phone" disabled /> </div>
+                </div>
+
+                 @*e-mail*@
+                <div style="margin-top:10px" class="row col-12">
+                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Mail: </label> </div>
+                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "type="email" name="mail" id="mail" value="@patient.mail" disabled /> </div>
+                </div>
+
+                @*doğum tarihi*@
+                <div style="margin-top:10px" class="row col-12">
+                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doğum Tarihi: </label> </div>
+                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center;"type="date" name="birthDate" id="birthDate" value="@patient.birthDate" disabled/></div>
+                </div>
+
+                @*doğum yeri*@
+                <div style="margin-top:10px" class="row col-12">
+                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doğum Yeri: </label> </div>
+                <div class="col-9">
+                    <select style="font-size:120%; font-family:times" name="birthplace" id="birthPlace" disabled>
+                        @*bunu kod kısmında yazabilirz*@
+                        <option value="@patient.birthPlace"> @patient.birthPlace</option>
+                    </select>
+                </div>
+                </div>
+
+                 @* Adres bilgisini input yerine textarea*@
+                <div style="margin-top:10px" class="row col-12">
+                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Adres: </label> </div>
+                <div class="col-9">
+                    <textarea style="font-size:120%; font-family:times; text-align:center;" name="adress" id="adress" rows="5" disabled> @patient.adress</textarea>
+                </div>
+                </div>
+
+           
+            </div>
+            
+        
+            @*Muayne Bilgisi*@
+            <div class="col-6">
+                <div class="row col-12">
+                    <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; ">Tanı</label> </div>
+                    <div class="col-9">
+                    <textarea name="diagnosis" id="diagnosisId" rows="10"
+                             style="font-size:120%; font-family:times; text-align:center; resize:horizontal;width:-webkit-fill-available;"> </textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top:10px" class="row col-12">
+                    <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Tahliller </label> </div>
+                    <div class="col-9">
+                        <select style="font-size:120%; font-family:times" name="analyzes" id="analyzesId">
+                            @*bunu kod kısmında yazabilirz*@
+                            @foreach (var item in analyzes)
+                            {
+                                <option value="@item.id"> @item.name</option>
+                            }
+                            
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-top:10px" class="row col-12">
+                    <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> İlaçlar </label> </div>
+                    <div class="col-9">
+                        <select style="font-size:120%; font-family:times" name="medicines" id="medicinesId">
+                            @*bunu kod kısmında yazabilirz*@
+                            @foreach (var item in medicines)
+                            {
+                                <option value="@item.id"> @item.name</option>
+                            }
+                            
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+
+</form>
+
+
+

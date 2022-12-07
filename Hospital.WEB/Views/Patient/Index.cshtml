@@ -14,67 +14,75 @@
 *@
 
 
+@*CSS*@
+@*<head>
+    <style>
+        div {
+            background-color:darkgreen;
+            }
+    </style>
+</head>*@
+
+
 <body onload="GetDoctor()">
 <form>
     
 <div class="row col-12">
 
-
-
     <div class="col-6">
         
         @*tc*@
         <div class="row col-12" @*style="color:black; padding:50px;"*@>
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> TC NO: </label> </div>
-            <div class="col-9"> <input style="font-size:80%; font-family:times" type="text" name="tc" id="tc" pattern="[0-9]{11}" title="İstenilen bilgi 11 haneli sayı" onblur="GetInfo()"> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> TC NO: </label> </div>
+            <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="text" name="tc" id="tc" pattern="[0-9]{11}" title="İstenilen bilgi 11 haneli sayı" onblur="GetInfo()"> </div>
         </div>
 
         @*isim*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> AD: </label> </div>
-            <div class="col-9"> <input style="font-size:80%; font-family:times" type="text" name="name" id="name"/> </div>   
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> AD: </label> </div>
+            <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="text" name="name" id="name"/> </div>   
         </div>
 
         @*soyad*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> SOYAD: </label> </div>
-            <div class="col-9"> <input style="font-size:80%; font-family:times" type="text" name="surname" id="surname"/> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> SOYAD: </label> </div>
+            <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="text" name="surname" id="surname"/> </div>
         </div>
 
         @*Telefona özel regex*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Telefon No: </label> </div>
-            <div class="col-9"> <input style="font-size:80%; font-family:times" type="text" name="phone" id="phone" placeholder="123-123-1234" pattern="[0-9]{10}" /> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Telefon No: </label> </div>
+            <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="text" name="phone" id="phone" placeholder="1231231234" pattern="[0-9]{10}" /> </div>
         </div>
 
         @*e-mail*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Mail: </label> </div>
-            <div class="col-9"> <input style="font-size:80%; font-family:times" type="email" name="mail" id="mail" /> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Mail: </label> </div>
+            <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="email" name="mail" id="mail" /> </div>
         </div>
        
         @*doğum tarihi*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Doğum Tarihi: </label> </div>
-            <div class="col-9"> <input style="font-size:80%; font-family:times"  type="date" name="birthDate" id="birthDate" onblur="GetAge()" required /> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doğum Tarihi: </label> </div>
+            <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "  type="date" name="birthDate" id="birthDate" onblur="GetAge()" required /> </div>
         </div>
 
         @*yaşı gösteren input*@
         <div style="margin-top:10px" class="row col-12">
-             <div class="col-3"> <label style="font-size:80%; font-family:times"> Yaş: </label> </div>
-             <div class="col-9"> <input style="font-size:80%; font-family:times" name="patientType" id="patientType" onchange="GetAge()" /> </div>
+             <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Yaş: </label> </div>
+             <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " name="patientType" id="patientType" onchange="GetAge()" /> </div>
         </div>
 
         @*doğum yeri*@
         <div style="margin-top:10px" class="row col-12">
-                    <div class="col-3"> <label style="font-size:80%; font-family:times"> Doğum Yeri: </label> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doğum Yeri: </label> </div>
             <div class="col-9"> 
-                <select style="font-size:80%; font-family:times" name="birthplace" id="birthPlace"> @*bunu kod kısmında yazabilirz*@
+                <select style="font-size:120%; font-family:times" name="birthplace" id="birthPlace"> @*bunu kod kısmında yazabilirz*@
                     @foreach (var eleman in Iller)
                     {
-                        <option value="none" selected disabled hidden style="font-size:80%; font-family:times"> İl Seçiniz </option>
+                        <option value="none" selected disabled hidden style="font-size:120%; font-family:times; text-align:center; "> İl Seçiniz </option>
 
-                        <option value="@eleman" style="font-size:80%; font-family:times"> @eleman</option>
+                        <option value="@eleman" style="font-size:100%; font-family:times; text-align:center; "> @eleman</option>
                     }                    
                 </select>
             </div>
@@ -82,26 +90,25 @@
 
        @* Adres bilgisini input yerine textarea*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Adres: </label> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Adres: </label> </div>
             <div class="col-9">
-                <textarea style="font-size:80%; font-family:times" name="adress" id="adress" rows="5"></textarea>
+                <textarea style="font-size:120%; font-family:times; text-align:center; " name="adress" id="adress" rows="5"></textarea>
             </div>
         </div>
 
         @*şikayet alanı*@
         <div style="margin-top:10px" class="row col-12"> 
-        <div class="col-3"> <label style="font-size:80%; font-family:times"> Şikayet Bilgisi: </label> </div>
+        <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Şikayet Bilgisi: </label> </div>
         <div class="col-9"> 
-            <textarea style="font-size:80%; font-family:times" id="complaint" name="complaint" rows="4">  </textarea> 
+            <textarea style="font-size:120%; font-family:times; text-align:center; " id="complaint" name="complaint" rows="4">  </textarea> 
         </div>
         </div>
-
 
         @*sigorta bilgisini içeren div*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Sigorta Bilgisi: </label> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Sigorta Bilgisi: </label> </div>
             <div class="col-9" >
-                <input style="font-size:80%; font-family:times" name="insurance" id="insurance" rows="8"/>
+                <input style="font-size:120%; font-family:times; text-align:center; " name="insurance" id="insurance" rows="8"/>
             </div>
         </div>
 
@@ -110,25 +117,25 @@
         @*name kısımları sqldeki columnlarla aynı olmalı çünkü çakıştıralım*@
         @*Randevu*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Randevu Tarihi: </label> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Randevu Tarihi: </label> </div>
             <div class="col-9">
-                <input style="font-size:80%; font-family:times" type="datetime-local" name="date" id="date"/>
+                <input style="font-size:120%; font-family:times; text-align:center; " type="datetime-local" name="date" id="date"/>
             </div>
         </div>
 
         @*select te onchange ile metot çağırdık metodu en altta yazdık js ile*@
         @*poliklinikler*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Poliklinikler: </label> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Poliklinikler: </label> </div>
             <div class="col-9">
-                <select style="font-size:80%; font-family:times" name="polyclinicId" id="polyclinicId" onchange="GetDoctor()" >
-                    <option value="0" style="font-size:80%; font-family:times"> Poliklinik Seçiniz:</option>
+                <select style="font-size:120%; font-family:times" name="polyclinicId" id="polyclinicId" onchange="GetDoctor()" >
+                    <option value="0" style="font-size:100%; font-family:times; text-align:center; "> Poliklinik Seçiniz:</option>
                     @*bunu kod kısmında yazabilirz*@
                     @foreach (var eleman in polyclinics)
                     {
                         @*<option value="none" selected disabled hidden> Poliklinik Seçiniz </option>*@
                         @*arkaplanda yani value da id görünürde name basılcak seçtiğimizde idsini seçmiş oluoz*@
-                        <option value="@eleman.id" style="font-size:80%; font-family:times"> @eleman.name</option>
+                        <option value="@eleman.id" style="font-size:100%; font-family:times; text-align:center; "> @eleman.name</option>
                     }
                 </select>
             </div>
@@ -136,9 +143,9 @@
 
        @*doktor*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Doktor: </label> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doktor: </label> </div>
             <div class="col-9">
-                <select style="font-size:80%; font-family:times" name="doctorId" id="doctorId" onchange="GetDoctorCost()"> @*doktor değişince ücreti değişen fonk onchangede*@
+                <select style="font-size:120%; font-family:times; text-align:center; " name="doctorId" id="doctorId" onchange="GetDoctorCost()"> @*doktor değişince ücreti değişen fonk onchangede*@
                     @*bunu kod kısmında yazabilirz*@
                     
                     @foreach (var eleman in doctors)
@@ -146,33 +153,33 @@
                         @*arkaplanda yani value da id görünürde name basılcak seçtiğimizde idsini seçmiş oluoz*@
                         @*default değer*@
                         @*<option value="none" selected disabled hidden>Doktor Seçiniz</option>*@
-                        <option value="@eleman.id" style="font-size:80%; font-family:times"> @eleman.name @eleman.surname</option>
+                        <option value="@eleman.id" style="font-size:120%; font-family:times; text-align:center; "> @eleman.name @eleman.surname</option>
                     }
                 </select>
             </div>
         </div>
 
-                @*doktor odası adresi*@
-                <div style="margin-top:10px" class="row col-12">
-                    <div class="col-3"> <label style="font-size:80%; font-family:times"> Doktor Odası Adresi: </label> </div>
-                    <div class="col-9">
-                        <input style="font-size:80%; font-family:times" name="doctorRoom" id="doctorRoom" rows="8" />
-                    </div>
-                </div>
+       @*doktor odası adresi*@
+        <div style="margin-top:10px" class="row col-12">
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; ">Oda Adresi: </label> </div>
+            <div class="col-9">
+                <input style="font-size:120%; font-family:times; text-align:center; " name="doctorRoom" id="doctorRoom" rows="8" />
+            </div>
+        </div>
         
         @*doktor ücreti*@
         <div style="margin-top:10px" class="row col-12">
-            <div class="col-3"> <label style="font-size:80%; font-family:times"> Doktor Ücreti: </label> </div>
+            <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doktor Ücreti: </label> </div>
                 <div class="col-9">
-                    <input style="font-size:80%; font-family:times" name="doctorCost" id="doctorCost" rows="8" />
+                    <input style="font-size:120%; font-family:times; text-align:center; " name="doctorCost" id="doctorCost" rows="8" />
                 </div>
         </div>
 
-        
+        @*sonraki hasta butonu *@
         <div style="margin-top:10px" class="row col-12">
             <div class="col-3"></div>
             <div class="col-9">
-                <button style="margin-top:20px" class="btn btn-outline-info"  asp-controller="Patient" asp-action="Save"> Sonraki Hastaya Geç</button>
+                <button style="margin-top:20px; text-align:center; " class="btn btn-outline-info"  asp-controller="Patient" asp-action="Save"> Sonraki Hastaya Geç</button>
             </div>
 
     </div>
@@ -181,7 +188,7 @@
 
 
     <div class="col-6">
-        <table style="font-size:80%; font-family:times" id="dataTable" class="table table-bordered">
+        <table style="font-size:120%; border-block-color:goldenrod; font-family:times" id="dataTable" class="table table-hover">
             <thead>
                 <tr >
                     <th>ID</th>
@@ -389,7 +396,7 @@
                         '<td>' + [item.doctorNameSurname] + '</td>' +
                         '<td>' + [item.complaint] + '</td>' +
                         '<td> <a onclick="GetSelected(' + [item.id] + ',\'' + [item.date] + '\',\'' + [item.polyclinicId] + '\',\'' + [item.polyclinicName] + '\',\'' +
-                         [item.doctorId] + '\',\'' +[item.doctorNameSurname]+'\',\''+[item.complaint]+'\');" > <i class="bi bi-box-arrow-in-down"></i> </a> </td > ' +'</tr>')).draw();
+                         [item.doctorId] + '\',\'' +[item.doctorNameSurname]+'\',\''+[item.complaint]+'\');" > <i class="bi bi-arrow-down-square-fill"></i> </a> </td > ' +'</tr>')).draw();
                     }
                     
                     
@@ -406,6 +413,7 @@
     //hasta ve randevu bilgilerini ikiye ayırdık yukarda getinfoda birlikte çalıştırcaz
     function GetPatient()
     {
+
         var tc=document.getElementById('tc').value;
         $.ajax(
             {
@@ -414,6 +422,10 @@
                 data: {tc: tc},
                 success: function(data)
                 {
+
+                    //document.getElementById('complaint').disabled = false;
+                    //document.getElementById('complaint').value = x;
+
                     //HASTA İÇİN
                     //textboxların datanın boş veya dolu olmasına göre aktif ve boş olma durumları için if kontrolü
                     if(data==null) //yeni tc ile kayıt olursa
@@ -426,6 +438,7 @@
                         document.getElementById('birthDate').disabled = false;;
                         document.getElementById('birthPlace').disabled = false;
                         document.getElementById('adress').disabled = false;
+                        
 
                         //textbox içindeki alanları boşaltma
                         document.getElementById('name').value = "";
@@ -435,6 +448,7 @@
                         document.getElementById('birthDate').value = "";
                         document.getElementById('birthPlace').value = "";
                         document.getElementById('adress').value = "";
+                        
 
                     }
                     else
@@ -448,6 +462,7 @@
                         document.getElementById('adress').value = data.adress;
 
 
+
                         //ekrana yazdıktan sonra deaktif
                         document.getElementById('name').disabled = true;
                         document.getElementById('surname').disabled = true;
@@ -456,7 +471,21 @@
                         document.getElementById('birthDate').disabled = true;;
                         document.getElementById('birthPlace').disabled = true;
                         document.getElementById('adress').disabled = true;
+
+
                     }
+
+                    //if(document.getElementById('complaint').value!=null)
+                    //{
+                    //document.getElementById('complaint').disabled = false;
+                    //document.getElementById('complaint').value = x;
+                    //}
+                    //else
+                    //{
+                    //document.getElementById('complaint').disabled = true;
+                    //document.getElementById('complaint').value = "";
+                    //}
+
                     GetAge();
 
                     //document.getElementById('name').readOnly=true;
@@ -470,6 +499,7 @@
     function GetSelected(id, date, polyclinicId, polyclinicName, doctorId, doctorNameSurname, complaint) {
         
         document.getElementById('date').value=date;
+        //acmak lazım üstteki için? document.getElementById('complaint').value = complaint;
        
 
         if (document.getElementById('complaint').value !=null)
@@ -550,7 +580,7 @@
                             
                 document.getElementById('patientType').disabled = true;
                 document.getElementById('patientType').value = "öncelikli hasta değildir.";
-                document.getElementById('patientType').style.backgroundColor = "red";
+                document.getElementById('patientType').style.backgroundColor = "indianred";
                 document.getElementById('patientType').style.color = "white";
 
 
@@ -561,7 +591,7 @@
                 //65 yaşından büyük olanlar
                 document.getElementById('patientType').disabled = true;
                 document.getElementById('patientType').value = "öncelikli hasta";
-                document.getElementById('patientType').style.backgroundColor = "blue";
+                document.getElementById('patientType').style.backgroundColor = "lightskyblue";
                 document.getElementById('patientType').style.color = "white";
 
             }
@@ -574,7 +604,6 @@
 
 
     }
-
 
     function GetDoctorRoom()
     {
@@ -598,7 +627,7 @@
                     {
                         document.getElementById('doctorRoom').disabled = true;
                         document.getElementById('doctorRoom').value = data.address;
-                        document.getElementById('doctorRoom').style.backgroundColor = "pink";
+                        document.getElementById('doctorRoom').style.backgroundColor = "lightblue";
                         document.getElementById('doctorRoom').style.color = "white";
                     }
                 }
