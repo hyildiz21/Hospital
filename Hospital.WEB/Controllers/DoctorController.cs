@@ -22,9 +22,11 @@ namespace Hospital.WEB.Controllers
 
 			List<Analyz> analyzes = context.Analyzes.ToList();
 			List<Medicine> medicines = context.Medicines.ToList();
+			List<Polyclinic> polyclinics = context.Polyclinics.ToList();
 
 			ViewData["Analyzes"] = analyzes;
 			ViewData["Medicines"] = medicines;
+			ViewData["Polyclinics"] = polyclinics;
 
 
 			return View(patient);

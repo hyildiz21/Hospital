@@ -3,121 +3,307 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    Patient patient = Model as Patient;
-    //karşı tarafa listleri viewdata ile gönderdik
-    List<Analyz> analyzes = ViewData["Analyzes"] as List<Analyz>;
-    List<Medicine> medicines = ViewData["Medicines"] as List<Medicine>;
+	Patient patient = Model as Patient;
+	//karşı tarafa listleri viewdata ile gönderdik
+	List<Analyz> analyzes = ViewData["Analyzes"] as List<Analyz>;
+	List<Medicine> medicines = ViewData["Medicines"] as List<Medicine>;
+	List<Polyclinic> polyclinics = ViewData["Polyclinics"] as List<Polyclinic>;
 
 
 }
-<form>
-    <body>
-        <div class="row col-12">
-            <div class="col-6">
+<head>
+	<style>
+			
+		/*.box {
+		  position: absolute;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		}*/
 
-                @*tc*@
-                <div class="row col-12" @*style="color:black; padding:50px;"*@>
-                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> TC NO: </label> </div>
-                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "type="text" name="tc" id="tc" value="@patient.tc" disabled> </div>
-                </div>
+		.box select {
+		  background-color: #0563af;
+		  color: white;
+		  padding: 5px;
+		  width: 250px;
+		  border: none;
+		  font-size: 20px;
+		  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		  -webkit-appearance: button;
+		  appearance: button;
+		  outline: none;
+		}
 
-                @*isim*@
-                <div style="margin-top:10px" class="row col-12">
-                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> AD: </label> </div>
-                    <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center;" type="text" name="name" id="name" value="@patient.name" disabled /> </div>
-                </div>
+		.box::before {
+		  content: "\f13a";
+		  font-family: FontAwesome;
+		  position: absolute;
+		  top: 0;
+		  right: 0;
+		  width: 20%;
+		  height: 100%;
+		  text-align: center;
+		  font-size: 2px;
+		  line-height: 45px;
+		  color: rgba(255, 255, 255, 0.5);
+		  background-color: rgba(255, 255, 255, 0.0);
+		  pointer-events: none;
+		  display: none
+		}
 
-                @*soyad*@
-                <div style="margin-top:10px" class="row col-12">
-                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> SOYAD: </label> </div>
-                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "type="text" name="surname" id="surname" value="@patient.surname" disabled /> </div>
-                </div>
+		.box:hover::before {
+		  color: rgba(255, 255, 255, 0.6);
+		 background-color: rgba(255, 255, 255, 0.0);
+		 
+		}
 
-                @*Telefona özel regex*@
-                <div style="margin-top:10px" class="row col-12">
-                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Telefon No: </label> </div>
-                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "type="text" name="phone" id="phone" value="@patient.phone" disabled /> </div>
-                </div>
+		.box select option {
+		  padding: 8px;
+		}
+	</style>
 
-                 @*e-mail*@
-                <div style="margin-top:10px" class="row col-12">
-                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Mail: </label> </div>
-                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; "type="email" name="mail" id="mail" value="@patient.mail" disabled /> </div>
-                </div>
+	<form>
+		<body>
+			<div class="row col-12">
+				<div class="col-6">
 
-                @*doğum tarihi*@
-                <div style="margin-top:10px" class="row col-12">
-                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doğum Tarihi: </label> </div>
-                <div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center;"type="date" name="birthDate" id="birthDate" value="@patient.birthDate" disabled/></div>
-                </div>
+					@*tc*@
+					<div class="row col-12" @*style="color:black; padding:50px;"*@>
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> TC NO: </label> </div>
+						<div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="text" name="tc" id="tc" value="@patient.tc" disabled> </div>
+					</div>
 
-                @*doğum yeri*@
-                <div style="margin-top:10px" class="row col-12">
-                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doğum Yeri: </label> </div>
-                <div class="col-9">
-                    <select style="font-size:120%; font-family:times" name="birthplace" id="birthPlace" disabled>
-                        @*bunu kod kısmında yazabilirz*@
-                        <option value="@patient.birthPlace"> @patient.birthPlace</option>
-                    </select>
-                </div>
-                </div>
+					@*isim*@
+					<div style="margin-top:10px" class="row col-12">
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> AD: </label> </div>
+						<div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center;" type="text" name="name" id="name" value="@patient.name" disabled /> </div>
+					</div>
 
-                 @* Adres bilgisini input yerine textarea*@
-                <div style="margin-top:10px" class="row col-12">
-                <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Adres: </label> </div>
-                <div class="col-9">
-                    <textarea style="font-size:120%; font-family:times; text-align:center;" name="adress" id="adress" rows="5" disabled> @patient.adress</textarea>
-                </div>
-                </div>
+					@*soyad*@
+					<div style="margin-top:10px" class="row col-12">
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> SOYAD: </label> </div>
+						<div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="text" name="surname" id="surname" value="@patient.surname" disabled /> </div>
+					</div>
 
-           
-            </div>
-            
-        
-            @*Muayne Bilgisi*@
-            <div class="col-6">
-                <div class="row col-12">
-                    <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; ">Tanı</label> </div>
-                    <div class="col-9">
-                    <textarea name="diagnosis" id="diagnosisId" rows="10"
-                             style="font-size:120%; font-family:times; text-align:center; resize:horizontal;width:-webkit-fill-available;"> </textarea>
-                    </div>
-                </div>
+					@*Telefona özel regex*@
+					<div style="margin-top:10px" class="row col-12">
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Telefon No: </label> </div>
+						<div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="text" name="phone" id="phone" value="@patient.phone" disabled /> </div>
+					</div>
 
-                <div style="margin-top:10px" class="row col-12">
-                    <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Tahliller </label> </div>
-                    <div class="col-9">
-                        <select style="font-size:120%; font-family:times" name="analyzes" id="analyzesId">
-                            @*bunu kod kısmında yazabilirz*@
-                            @foreach (var item in analyzes)
-                            {
-                                <option value="@item.id"> @item.name</option>
-                            }
-                            
-                        </select>
-                    </div>
-                </div>
+					@*e-mail*@
+					<div style="margin-top:10px" class="row col-12">
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Mail: </label> </div>
+						<div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center; " type="email" name="mail" id="mail" value="@patient.mail" disabled /> </div>
+					</div>
 
-                <div style="margin-top:10px" class="row col-12">
-                    <div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> İlaçlar </label> </div>
-                    <div class="col-9">
-                        <select style="font-size:120%; font-family:times" name="medicines" id="medicinesId">
-                            @*bunu kod kısmında yazabilirz*@
-                            @foreach (var item in medicines)
-                            {
-                                <option value="@item.id"> @item.name</option>
-                            }
-                            
-                        </select>
-                    </div>
-                </div>
+					@*doğum tarihi*@
+					<div style="margin-top:10px" class="row col-12">
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doğum Tarihi: </label> </div>
+						<div class="col-9"> <input style="font-size:120%; font-family:times; text-align:center;" type="date" name="birthDate" id="birthDate" value="@patient.birthDate" disabled /></div>
+					</div>
 
-            </div>
-        </div>
+					@*doğum yeri*@
+					<div style="margin-top:10px" class="row col-12">
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Doğum Yeri: </label> </div>
+						<div class="col-9">
+							<select style="font-size:120%; font-family:times" name="birthplace" id="birthPlace" disabled>
+								@*bunu kod kısmında yazabilirz*@
+								<option value="@patient.birthPlace"> @patient.birthPlace</option>
+							</select>
+						</div>
+					</div>
 
-    </body>
+					@* Adres bilgisini input yerine textarea*@
+					<div style="margin-top:10px" class="row col-12">
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; "> Adres: </label> </div>
+						<div class="col-9">
+							<textarea style="font-size:120%; font-family:times; text-align:center;" name="adress" id="adress" rows="5" disabled> @patient.adress</textarea>
+						</div>
+					</div>
 
-</form>
+
+				</div>
+
+
+				@*Muayne Bilgisi*@
+				<div class="col-6">
+					<div class="row col-12">
+						<div class="col-3"> <label style="font-size:120%; font-family:times; text-align:center; ">Tanı</label> </div>
+						<div class="col-9">
+							<textarea name="diagnosis" id="diagnosisId" rows="10"
+									  style="font-size:120%; font-family:times; text-align:center; resize:horizontal;width:-webkit-fill-available;"> </textarea>
+						</div>
+					</div>
+				</div>
+
+
+				@*doktor işlem butonları*@
+				<div class="row" style="padding:20px;background:aliceblue; border:6px solid lightblue; font-family:times; text-align:center;">
+					
+					<div class="col-3" style="background-color:cadetblue">
+
+						<div style="margin-top:10px" class="row col-12">
+							<div class="col-6"> <label style="font-size:120%; font-family:times; text-align:center;"> Tahliller </label> </div>
+							<div class="col-6; box">
+								<select style="font-size:120%; font-family:times" name="analyzes" id="analyzesId" multiple>
+									@*bunu kod kısmında yazabilirz*@
+									@foreach (var item in analyzes)
+									{
+										<option value="@item.id"> @item.name</option>
+									}
+
+								</select>
+							</div>
+						</div>
+
+						<a onclick="SetAnalyzes();" class="btn btn-warning" style="margin:10px; border-radius:12px; padding:12px ">Tahlil</a>
+					</div>
+
+					<div class="col-3" style="background-color:cornflowerblue">
+						<div style="margin-top:10px" class="row col-12">
+							<div class="col-6"> <label style="font-size:120%; font-family:times; text-align:center; "> İlaçlar </label> </div>
+							<div class="col-6; box">
+								<select style="font-size:120%; font-family:times" name="medicines" id="medicinesId" multiple>
+									@*bunu kod kısmında yazabilirz*@
+									@foreach (var item in medicines)
+									{
+										<option value="@item.id"> @item.name</option>
+									}
+
+								</select>
+							</div>
+						</div>
+
+						<div style="margin-top:10px" class="row col-6">
+							<div class="col-1"> <label style="font-size:120%; font-family:times; text-align:center; "></label> </div>
+							<div class="col-5; box">
+								<select style="font-size:120%; font-family:times" name="medicines" id="medicinesId2" multiple>
+									@*bunu kod kısmında yazabilirz*@
+									@foreach (var item in medicines)
+									{
+										<option></option>
+									}
+
+								</select>
+							</div>
+						</div>
+						@*<a onclick="MoveMedicine();" class="btn btn-warning" style="margin:10px">İlaç</a>*@
+						<a onclick="TransferValues();" class="btn btn-warning" style="margin:10px; border-radius:12px; padding:12px "> İlaç Seç</a>
+
+					</div>
+
+					<div class="col-3" style="background-color:dodgerblue">
+						<div style="margin-top:10px" class="row col-12">
+							<div class="col-6"> <label style="font-size:120%; font-family:times; text-align:center; "> Poliklinikler </label> </div>
+							<div class="col-6; box">
+								<select style="font-size:120%; font-family:times" name="polyclinics" id="polyclinicId">
+									@*bunu kod kısmında yazabilirz*@
+									@foreach (var item in polyclinics)
+									{
+										<option value="@item.id">@item.name </option>
+									}
+
+								</select>
+							</div>
+						</div>
+						<a onclick="PatientSend();" class="btn btn-warning" style="margin:10px; border-radius:12px; padding:12px; "> Sevk Et </a>
+
+					</div>
+
+					<div class="col-3" style="background-color:steelblue">
+						<div style="margin-top:10px" class="row col-12">
+							<div class="col-6"> <label style="font-size:120%; font-family:times; text-align:center; "> İleri Tarihli Randevu </label> </div>
+							<div class="col-6">
+								<input style="font-size:120%; font-family:times" type="date" name="appoinment" id="appointmentId"> </input>
+							</div>
+						</div>
+						<a onclick="SetAppointment();" class="btn btn-warning" style="margin:10px; border-radius:12px; padding:12px; ">Randevu Al</a>
+
+					</div>
+				</div>
+
+			</div>
+
+
+		</body>
+
+	</form>
+
+</head>
+
+
+<script>
+
+	function SetAnalyzes() {
+		analyzes = document.getElementById('analyzesId');
+
+		for (var i = 0; i < analyzes.options.length; i++) {
+			var value = analyzes.options[i].value;
+			var text = analyzes.options[i].text;
+
+			if (analyzes.options[i].selected) {
+
+				var opt = document.createElement('option');
+				opt.value = value;
+				opt.innerHTML = text;
+				alert("Hastaya " + text + " yapılacak");
+				//karşı tarafa gidicek olan bilgi bi nevi
+			}
+		}
+	}
+
+	function TransferValues() 
+	{
+		var firstList = document.getElementById('medicinesId');
+	
+		for (var i = 0; i < firstList.options.length; i++)
+		{
+			var value = firstList.options[i].value;
+			var text = firstList.options[i].text;
+			if (firstList.options[i].selected) 
+			{
+				var option = document.createElement('option');
+				option.value = value;
+				option.innerHTML = text;
+				secondList=document.getElementById('medicinesId2');
+				secondList.add(option);	
+			}
+		}
+		//if(secondList.options[i].count!=0)
+		//{	
+		//	alert("aynı ilacı ekleyemezsiniz.")
+		//}
+
+	}
+
+	function SetAppointment() {
+		alert("Başarılı Şekilde Randevu Alındı.");
+	}
+
+	function PatientSend()
+	{
+
+		select1 = document.getElementById('polyclinicId');
+		for (var j = 0; j < select1.options.length; j++)
+		{
+			var value = select1.options[j].value;
+			var text = select1.options[j].text;
+
+			if(select1.options[j].selected)
+			{
+				var   opt=document.createElement('option');
+				opt.value=value;
+				opt.innerHTML=text;
+				alert("Hasta Başarılı Şekilde " + text + " Bölümüne Sevk Edildi.");
+			}
+
+		}
+
+	}
+
+
+</script>
 
 
 
